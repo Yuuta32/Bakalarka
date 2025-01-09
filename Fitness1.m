@@ -6,7 +6,7 @@ stepSize = 0.1; % Veľkosť jedného kroku
 neunet = NNI8(genotyp);
 
 for step = 1:maxSteps
-
+    input = generateInput(robot, map);
     % Výpočet rýchlostí kolies pomocou neurónovej siete
     [Vl, Vr] = NeuronovaSiet(neunet, input); % Implementujte forward pass siete
 
@@ -32,4 +32,16 @@ end
 if distanceToTarget >= threshold
     fitness = fitness + 100; % Penalizácia za nedosiahnutie cieľa
 end
+end
+function input = generateInput(robot, map)
+% Získanie aktuálnej pozície
+[currentX, currentY, currentPhi] = getCurrentPosition(robot);
+
+% Získanie predchádzajúcej pozície
+[prevX, prevY, prevPhi] = getPreviousPosition(robot);
+
+% Vytvorenie vstupného vektora
+input = [
+    currentX; currentY; currentPhi; prevX; prevY; prevPhi; map.endX; map.endY
+    ];
 end

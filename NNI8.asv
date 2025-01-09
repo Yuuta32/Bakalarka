@@ -44,7 +44,7 @@ classdef NNI8
             
             ninput = input / 100;
 
-            X = ninput;
+            X = cell2mat(ninput');
             %Treba prvky ešte normalizovať
 
             A1 = (neunet.W1*X)+neunet.B1;
@@ -56,8 +56,8 @@ classdef NNI8
 
             % Treba denormalizovať
 
-            Vl = A31(1) * 10;
-            Vr = A31(2) * 10;
+            Vl = A31(1) * 100;
+            Vr = A31(2) * 100;
 
         end
     end

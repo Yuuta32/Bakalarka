@@ -1,4 +1,4 @@
-classdef Robot
+classdef Robot < handle
     %UNTITLED3 Summary of this class goes here
     %   Detailed explanation goes here
 
@@ -57,12 +57,12 @@ classdef Robot
             rob.Vl = SpeedL;
         end
 
-        % Normalizácia pre vstup do neurónovej siete
-        function [normX, normY, normPhi] = normalize(obj, mapSize)
-            normX = obj.xt / mapSize;
-            normY = obj.yt / mapSize;
-            normPhi = obj.phi / pi;
-        end
+%         % Normalizácia pre vstup do neurónovej siete
+%         function [normX, normY, normPhi] = normalize(obj, mapSize)
+%             normX = obj.xt / mapSize;
+%             normY = obj.yt / mapSize;
+%             normPhi = obj.phi / pi;
+%         end
 
         function draw(rob)
             % Výpočet polohy kolies
@@ -80,7 +80,33 @@ classdef Robot
             plot(rob.xt, rob.yt, '+', 'Color', 'blue');
         end
         function drawTrajectory(rob)
-            plot(rob.minX, rob.minY, '+', 'Color', 'magenta');
+            plot(rob.minX, rob.minY, '-', 'Color', 'magenta');
+        end
+        function drawAllStates(rob)
+            % Iterácia cez všetky historické pozície robota
+            for i = 1:length(rob.minX)
+                % Získanie aktuálnej historickej pozície a orientácie
+                xt = rob.minX(i);
+                yt = rob.minY(i);
+                phi = rob.minPhi(i);
+
+                % Výpočet polohy kolies
+                prak(1) = xt + (rob.L / 2) * sin(phi);
+                prak(2) = yt - (rob.L / 2) * cos(phi);
+                lavk(1) = xt - (rob.L / 2) * sin(phi);
+                lavk(2) = yt + (rob.L / 2) * cos(phi);
+
+                % Vykreslenie kolies a spojnice
+                plot(prak(1), prak(2), 'o', 'Color', 'green', 'MarkerSize', 4);
+                plot(lavk(1), lavk(2), 'o', 'Color', 'red', 'MarkerSize', 4);
+                plot([lavk(1), prak(1)], [lavk(2), prak(2)], 'Color', 'blue', 'LineWidth', 1);
+
+                % Vykreslenie stredu robota
+                plot(xt, yt, '+', 'Color', 'blue', 'MarkerSize', 6);
+                pause(0.1);
+
+                hold on;
+            end
         end
         function [x,y,phi] = getCurrentPosition(rob)
             x = rob.xt;
@@ -93,7 +119,7 @@ classdef Robot
                 y = rob.minY(end-1);
                 phi = rob.minPhi(end-1);
             else
-                error('Nedostatok prvkov');
+                [x,y,phi] = getCurrentPosition(rob);
             end
         end
     end
