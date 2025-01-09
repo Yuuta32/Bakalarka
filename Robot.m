@@ -18,6 +18,7 @@ classdef Robot
         % História pohybu
         minX
         minY
+        minPhi
     end
 
     methods
@@ -28,6 +29,7 @@ classdef Robot
             rob.phi = phi;
             rob.minX = x;
             rob.minY = y;
+            rob.minPhi = phi;
         end
 
         % Aktualizácia stavu robota
@@ -46,6 +48,8 @@ classdef Robot
             % Uloženie trajektórie
             rob.minX = [rob.minX, rob.xt];
             rob.minY = [rob.minY, rob.yt];
+            rob.minPhi = [rob.minPhi, rob.phi];
+
         end
 
         function rob = setWheelSpeed(rob,SpeedR,SpeedL)
@@ -77,6 +81,20 @@ classdef Robot
         end
         function drawTrajectory(rob)
             plot(rob.minX, rob.minY, '+', 'Color', 'magenta');
+        end
+        function [x,y,phi] = getCurrentPosition(rob)
+            x = rob.xt;
+            y = rob.yt;
+            phi = rob.phi;
+        end
+        function [x,y,phi] = getPreviousPosition(rob)
+            if length(rob.minX) > 1 % Aspoň 2 prvky
+                x = rob.minX(end-1); 
+                y = rob.minY(end-1);
+                phi = rob.minPhi(end-1);
+            else
+                error('Nedostatok prvkov');
+            end
         end
     end
 end

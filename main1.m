@@ -12,9 +12,10 @@ robot = Robot(map.startX, map.startY, 0);
 krok = 0.05;
 maxt = 30;
 
+draw(robot);
+
 for t = 0:krok:maxt
     robot = update(robot,krok);
-    draw(robot);
 if(t<25)
     robot = robot.setWheelSpeed(1,1);
 else
@@ -22,4 +23,6 @@ else
 end
 
 end
+robot.drawTrajectory();
+draw(robot);
     
