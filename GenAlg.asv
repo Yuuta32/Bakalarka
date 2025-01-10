@@ -43,7 +43,7 @@ for generation = 1:maxGenerations
     topFit = [topFit, minFitness]; % Sledovanie fitness najlepšieho jedinca
     
     % Skontrolovať, či je cieľ dosiahnutý
-    if minFitness < 3000 % Napríklad: cieľová fitness hodnota je pozitívna
+    if minFitness < 5000 % Napríklad: cieľová fitness hodnota je pozitívna
         disp(['Cieľ dosiahnutý v generácii ', num2str(generation)]);
         disp('Najlepší genotyp:');
         disp(population(bestIdx, :));
@@ -65,8 +65,8 @@ for generation = 1:maxGenerations
             robot = robot.update(0.1);
             
             % Vykreslenie trajektórie
-            robot.drawTrajectory();
-            pause(0.01);
+%             robot.drawTrajectory();
+%             pause(0.01);
             
             % Kontrola, či je cieľ dosiahnutý
             if sqrt((robot.xt - endX)^2 + (robot.yt - endY)^2) < 0.1
